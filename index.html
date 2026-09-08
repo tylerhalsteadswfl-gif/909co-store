@@ -20,27 +20,22 @@ footer{border-top:1px solid #292929;padding:35px 0 50px;display:flex;justify-con
 </style>
 </head>
 <body>
-<header><div class="wrap" style="width:100%;display:flex;align-items:center;justify-content:space-between"><a class="logo" href="#">909</a><nav class="nav"><a href="#shop">SHOP</a><a href="#coming">COMING SOON</a><a href="#about">ABOUT</a></nav><div class="actions"><span>⌕</span><button id="cartBtn" style="background:none;color:#fff;border:0;font-size:22px;cursor:pointer">🛒 <b id="count">0</b></button></div></div></header>
+<header><div class="wrap" style="width:100%;display:flex;align-items:center;justify-content:space-between"><a class="logo" href="#">909</a><nav class="nav"><a href="#shop">SHOP</a><a href="#about">ABOUT</a></nav><div class="actions"><span>⌕</span><button id="cartBtn" style="background:none;color:#fff;border:0;font-size:22px;cursor:pointer">🛒 <b id="count">0</b></button></div></div></header>
 <main>
 <section class="hero"><div class="wrap"><div class="heroText"><div class="script">909</div><div class="tag">MORE THAN JUST CLOTHING.</div><a class="btn" href="#shop">SHOP NOW →</a></div></div></section>
 <section class="section wrap" id="shop"><div class="sectionTitle">FEATURED COLLECTION</div><div class="grid">
-<div class="card"><img class="productImg" src="tee.jpg"><div class="info"><div class="name">909 TEE</div><div class="price">$20.00</div><div class="sizes" data-product="tee"><button class="size">S</button><button class="size">M</button><button class="size active">L</button><button class="size">XL</button><button class="size">XXL</button></div><button class="add" data-name="909 TEE" data-price="20.00" data-img="tee.svg">ADD TO CART</button></div></div>
-<div class="card"><img class="productImg" src="jeans.jpg"><div class="info"><div class="name">909 JEANS</div><div class="price">$30.00</div><div class="sizes"><button class="size">28</button><button class="size">30</button><button class="size active">32</button><button class="size">34</button><button class="size">36</button></div><button class="add" data-name="909 JEANS" data-price="30.00" data-img="jeans.svg">ADD TO CART</button></div></div>
-<div class="card"><img class="productImg" src="sheisty.jpg"><div class="info"><div class="name">909 SHEISTY</div><div class="price">$12.00</div><div style="height:55px"></div><button class="add" data-name="909 SHEISTY" data-price="12.00" data-img="sheisty.svg">ADD TO CART</button></div></div>
+<div class="card"><img class="productImg" src="tee.jpg"><div class="info"><div class="name">909 TEE</div><div class="price">$20.00</div><div class="sizes" data-product="tee"><button class="size">S</button><button class="size">M</button><button class="size active">L</button><button class="size">XL</button><button class="size">XXL</button></div><button class="add" data-name="909 TEE" data-price="20.00" data-img="tee.jpg">ADD TO CART</button></div></div>
+<div class="card"><img class="productImg" src="jeans.jpg"><div class="info"><div class="name">909 JEANS</div><div class="price">$30.00</div><div class="sizes"><button class="size">28</button><button class="size">30</button><button class="size active">32</button><button class="size">34</button><button class="size">36</button></div><button class="add" data-name="909 JEANS" data-price="30.00" data-img="jeans.jpg">ADD TO CART</button></div></div>
+<div class="card"><img class="productImg" src="sheisty.jpg"><div class="info"><div class="name">909 SHEISTY</div><div class="price">$12.00</div><div style="height:55px"></div><button class="add" data-name="909 SHEISTY" data-price="12.00" data-img="sheisty.jpg">ADD TO CART</button></div></div>
 </div></section>
-<section class="section wrap" id="coming"><div class="sectionTitle">COMING SOON</div><div class="grid coming">
-<div class="card"><img class="productImg" src="tee.jpg"><div class="info"><div class="name">909 ZIP UP</div><div class="muted">COMING SOON</div></div></div>
-<div class="card"><img class="productImg" src="tee.jpg"><div class="info"><div class="name">909 LONG SLEEVE</div><div class="muted">COMING SOON</div></div></div>
-<div class="card"><img class="productImg" src="jeans.jpg"><div class="info"><div class="name">909 CARGO PANTS</div><div class="muted">COMING SOON</div></div></div>
-<div class="card"><img class="productImg" src="sheisty.jpg"><div class="info"><div class="name">909 BANDANA</div><div class="muted">COMING SOON</div></div></div>
-<div class="card"><img class="productImg" src="sheisty.jpg"><div class="info"><div class="name">909 BACKPACK</div><div class="muted">COMING SOON</div></div></div>
-</div></section>
+
 <section class="section wrap" id="about"><div class="sectionTitle">909CO</div><p style="max-width:650px;color:#aaa;line-height:1.7">Built for people who move different. 909CO is a black-and-white streetwear concept focused on clean graphics, aggressive silhouettes, and a signature handwritten 909 mark.</p></section>
 </main>
 <div class="cart" id="cart"><div style="display:flex;justify-content:space-between"><h3>YOUR CART</h3><button id="close" style="background:none;color:#fff;border:0;font-size:20px">×</button></div><div id="items"></div><div class="cartTotal"><span>SUBTOTAL</span><span id="total">$0.00</span></div><button class="btn" style="width:100%;margin-top:15px" onclick="alert('Connect your payment provider to enable checkout.')">CHECKOUT →</button></div>
 <footer class="wrap"><div><div class="logo">909</div><div class="muted">© 2026 909CO</div></div><form class="email" onsubmit="event.preventDefault();alert('Thanks for joining 909CO.')"><input placeholder="Enter your email for updates"><button>→</button></form><div class="muted">INSTAGRAM &nbsp; TIKTOK &nbsp; YOUTUBE</div></footer>
 <script>
 let cart=JSON.parse(localStorage.getItem("909cart")||"[]");
+cart.forEach(x=>{if(x.name==="909 TEE")x.img="tee.jpg";if(x.name==="909 JEANS")x.img="jeans.jpg";if(x.name==="909 SHEISTY")x.img="sheisty.jpg";});
 const $=s=>document.querySelector(s);
 function save(){localStorage.setItem("909cart",JSON.stringify(cart));render()}
 function render(){let n=cart.reduce((a,x)=>a+x.qty,0),t=cart.reduce((a,x)=>a+x.price*x.qty,0);$("#count").textContent=n;$("#total").textContent="$"+t.toFixed(2);$("#items").innerHTML=cart.map((x,i)=>`<div class="cartItem"><img class="thumb" src="${x.img}"><div class="grow"><b>${x.name}</b><div class="muted">$${x.price.toFixed(2)}</div><div class="qty"><button onclick="change(${i},-1)">−</button>${x.qty}<button onclick="change(${i},1)">+</button><button onclick="removeItem(${i})" style="margin-left:auto">×</button></div></div></div>`).join("")||'<div class="muted" style="padding:20px 0">Your cart is empty.</div>'}
