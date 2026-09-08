@@ -1,33 +1,100 @@
 <!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>909 — Ride Different</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>909 — RIDE DIFFERENT.</title>
 <style>
-:root{--b:#050505;--w:#f5f5f5;--g:#999;--l:#242424}*{box-sizing:border-box}
-body{margin:0;background:var(--b);color:var(--w);font-family:Arial,Helvetica,sans-serif}a{color:inherit;text-decoration:none}
-nav{position:sticky;top:0;z-index:5;background:#050505eF;border-bottom:1px solid var(--l);padding:18px 5%;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:28px;font-weight:900;letter-spacing:-2px}.links{display:flex;gap:25px;font-size:11px;font-weight:800;letter-spacing:2px}.cart{border:1px solid #444;padding:9px 12px;font-size:11px}
-.hero{min-height:78vh;display:grid;place-items:center;text-align:center;padding:70px 20px;border-bottom:1px solid var(--l);background:radial-gradient(circle,#1b1b1b 0,#050505 52%)}
-.hero h1{margin:0;font-size:clamp(100px,22vw,260px);line-height:.75;letter-spacing:-.1em}.hero p{color:#aaa;letter-spacing:5px;font-size:11px;font-weight:800;margin:38px 0 25px}.btn{display:inline-block;background:var(--w);color:#050505;padding:15px 27px;font-size:11px;font-weight:900;letter-spacing:2px}
-section{padding:75px 5%}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:32px}.head h2{margin:0;font-size:38px;letter-spacing:-2px}.head span{font-size:10px;color:#777;letter-spacing:2px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{border:1px solid var(--l);background:#0a0a0a}.pic{aspect-ratio:4/5;display:grid;place-items:center;background:linear-gradient(145deg,#191919,#080808)}.mark{font-size:60px;font-weight:900;letter-spacing:-7px;color:#ddd;transform:rotate(-7deg)}.info{padding:16px}.name{font-size:12px;font-weight:900;letter-spacing:1px}.price{font-size:13px;color:#aaa;margin-top:7px}.tag{display:inline-block;margin-top:11px;border:1px solid #333;padding:5px 7px;font-size:8px;color:#888;letter-spacing:1px}
-.about{border-top:1px solid var(--l);border-bottom:1px solid var(--l);display:grid;grid-template-columns:1fr 1fr;gap:40px}.about h2{font-size:55px;letter-spacing:-4px;margin:0}.about p{color:#aaa;line-height:1.7;max-width:520px}
-.signup{display:flex;border:1px solid #333;padding:7px}.signup input{flex:1;background:none;border:0;color:#fff;padding:10px;outline:0}.signup button{border:0;background:#fff;padding:0 18px;font-weight:900}
-footer{padding:42px 5%;border-top:1px solid var(--l);display:flex;justify-content:space-between;color:#777;font-size:10px;letter-spacing:1px}
-@media(max-width:700px){.links{display:none}.grid{grid-template-columns:1fr 1fr}.about{grid-template-columns:1fr}.about h2{font-size:43px}}
-@media(max-width:450px){.grid{grid-template-columns:1fr}.hero h1{font-size:31vw}}
-</style></head>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Permanent+Marker&display=swap');
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#050505;color:#fff;font-family:Inter,Arial,sans-serif}
+button,input{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;background-image:url("hero.jpg");background-size:cover;background-position:center;mix-blend-mode:screen}
+header{position:sticky;top:0;z-index:20;height:72px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(3,3,3,.9);border-bottom:1px solid #292929;backdrop-filter:blur(14px)}
+.logo{font-family:"Permanent Marker",cursive;font-size:36px;transform:rotate(-6deg);letter-spacing:-3px}.nav{display:flex;gap:34px;font-size:11px;font-weight:900;letter-spacing:2px}.nav a:hover{opacity:.55}
+.cartBtn{border:1px solid #555;background:#090909;color:#fff;padding:10px 14px;font-size:11px;font-weight:900;letter-spacing:1px}
+.hero{min-height:78vh;display:grid;grid-template-columns:1fr 1.35fr;align-items:center;padding:70px 5%;gap:30px;background-image:linear-gradient(90deg,rgba(0,0,0,.98) 0%,rgba(0,0,0,.58) 48%,rgba(0,0,0,.18)),url("hero.jpg");background-size:cover;background-position:center;border-bottom:1px solid #292929}
+.heroLogo{font-family:"Permanent Marker",cursive;font-size:clamp(100px,17vw,220px);line-height:.7;letter-spacing:-9px;transform:rotate(-5deg)}.tag{margin-top:42px;font-size:18px;letter-spacing:5px;font-weight:900}.hero p{color:#aaa;max-width:430px;line-height:1.7;font-size:13px}.cta{display:inline-block;margin-top:22px;background:#fff;color:#050505;padding:15px 24px;font-size:11px;font-weight:900;letter-spacing:2px}
+.section{padding:80px 5%;border-bottom:1px solid #242424}.head{display:flex;align-items:end;justify-content:space-between;margin-bottom:28px}.head h2{font-size:clamp(38px,6vw,72px);letter-spacing:-4px;margin:0;font-weight:900}.head span{font-size:10px;letter-spacing:3px;color:#777}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:#0a0a0a;border:1px solid #292929}.photo{aspect-ratio:1/1.12;background:#111;display:flex;align-items:center;justify-content:center;overflow:hidden}.photo img{width:100%;height:100%;object-fit:cover;display:block}.details{padding:18px}.name{font-size:14px;font-weight:900;letter-spacing:1px}.price{float:right;font-weight:900}.desc{clear:both;padding-top:8px;color:#777;font-size:10px;letter-spacing:1.5px}.sizes{display:flex;gap:7px;margin-top:15px}.sizes button{background:#090909;border:1px solid #444;color:#fff;padding:9px 11px;font-size:10px;font-weight:800}.sizes button.active{background:#fff;color:#000}.add{width:100%;margin-top:13px;padding:14px;border:0;background:#fff;color:#000;font-size:10px;font-weight:900;letter-spacing:2px}.add:hover{background:#ddd}
+.perks{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #292929}.perk{padding:25px;text-align:center;border-right:1px solid #292929}.perk:last-child{border:0}.perk b{display:block;font-size:11px;letter-spacing:2px}.perk span{color:#777;font-size:10px;line-height:2}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:70px}.about h3{font-family:"Permanent Marker",cursive;font-size:clamp(48px,7vw,90px);line-height:.9;transform:rotate(-3deg);margin:0}.about p{color:#aaa;line-height:1.8;font-size:14px}.signup{display:flex;margin-top:25px}.signup input{flex:1;background:#090909;border:1px solid #444;color:#fff;padding:14px}.signup button{border:0;background:#fff;padding:14px 20px;font-weight:900}
+footer{padding:35px 5%;display:flex;justify-content:space-between;color:#777;font-size:10px;letter-spacing:1px}
+.drawer{position:fixed;right:0;top:0;height:100vh;width:min(420px,94vw);background:#080808;border-left:1px solid #444;z-index:50;transform:translateX(105%);transition:.25s;box-shadow:-20px 0 60px #000;padding:24px;overflow:auto}.drawer.open{transform:translateX(0)}.drawerTop{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333;padding-bottom:18px}.drawerTop h2{font-size:14px;letter-spacing:2px}.close{background:none;border:0;color:#fff;font-size:25px}.cartItem{display:grid;grid-template-columns:75px 1fr auto;gap:12px;padding:17px 0;border-bottom:1px solid #292929}.cartItem img{width:75px;height:85px;object-fit:cover}.cartItem b{font-size:12px}.cartItem small{display:block;color:#777;margin-top:5px}.qty{display:flex;gap:5px;align-items:center;margin-top:10px}.qty button{width:25px;height:25px;background:#111;border:1px solid #444;color:#fff}.remove{background:none;border:0;color:#888;font-size:12px}.total{display:flex;justify-content:space-between;font-weight:900;margin:25px 0}.checkout{width:100%;padding:16px;background:#fff;border:0;font-weight:900;letter-spacing:2px}.empty{color:#777;text-align:center;padding:60px 0;font-size:13px}
+@media(max-width:750px){header{padding:0 18px}.nav{display:none}.hero{grid-template-columns:1fr;min-height:75vh;padding:60px 18px;background-position:60% center}.heroLogo{font-size:30vw}.section{padding:60px 18px}.grid{grid-template-columns:1fr}.perks{grid-template-columns:1fr}.perk{border-right:0;border-bottom:1px solid #292929}.perk:last-child{border:0}.about{grid-template-columns:1fr;gap:35px}footer{padding:28px 18px}}
+</style>
+</head>
 <body>
-<nav><a class="logo" href="#">909</a><div class="links"><a href="#shop">SHOP</a><a href="#about">ABOUT</a><a href="#contact">CONTACT</a></div><a class="cart" href="#shop">CART <span id="count">0</span></a></nav>
-<header class="hero"><div><h1>909</h1><p>RIDE DIFFERENT.</p><a class="btn" href="#shop">SHOP 909</a></div></header>
-<section id="shop"><div class="head"><h2>DROP 01</h2><span>BLACK ONLY.</span></div><div class="grid">
-<article class="card"><div class="pic"><div class="mark">909</div></div><div class="info"><div class="name">909 SHIRT</div><div class="price">$20.00</div><span class="tag">AVAILABLE</span></div></article>
-<article class="card"><div class="pic"><div class="mark" style="font-size:38px">909 DENIM</div></div><div class="info"><div class="name">909 BLACK JEANS</div><div class="price">COMING SOON</div><span class="tag">DROP 01</span></div></article>
-<article class="card"><div class="pic"><div class="mark">909</div></div><div class="info"><div class="name">909 SHEISTY</div><div class="price">COMING SOON</div><span class="tag">DROP 01</span></div></article>
-</div></section>
-<section class="about" id="about"><div><h2>NO RULES.<br>JUST 909.</h2></div><div><p>909 is built around clean black streetwear, aggressive silhouettes and an e-moto mindset. Minimal design. Heavy attitude. Ride different.</p></div></section>
-<section id="contact"><div class="head"><h2>STAY LOCKED IN.</h2><span>909CO.STORE</span></div><div class="signup"><input placeholder="EMAIL ADDRESS"><button>JOIN</button></div></section>
-<footer><span>© 2026 909</span><span>RIDE DIFFERENT.</span></footer>
+<header>
+<a class="logo" href="#">909</a>
+<nav class="nav"><a href="#shop">SHOP</a><a href="#about">ABOUT</a></nav>
+<button class="cartBtn" onclick="openCart()">CART (<span id="cartCount">0</span>)</button>
+</header>
+
+<main>
+<section class="hero">
+<div>
+<div class="heroLogo">909</div>
+<div class="tag">MORE THAN JUST CLOTHING.</div>
+<p>Built for the ones who move different. DROP 01 — black essentials made to stand out without trying.</p>
+<a class="cta" href="#shop">SHOP NOW →</a>
+</div>
+</section>
+
+<section class="section" id="shop">
+<div class="head"><h2>DROP 01</h2><span>3 PRODUCTS</span></div>
+<div class="grid">
+<article class="card" data-id="tee">
+<div class="photo"><img src="909-tee.jpg" alt="909 Tee front and back"></div>
+<div class="details"><span class="name">909 TEE</span><span class="price">$20.00</span><div class="desc">BLACK / WHITE · SIGNATURE 909</div>
+<div class="sizes"><button class="active" onclick="size(this)">S</button><button onclick="size(this)">M</button><button onclick="size(this)">L</button><button onclick="size(this)">XL</button></div>
+<button class="add" onclick="add('tee','909 TEE',20,'909-tee.jpg')">ADD TO CART</button></div>
+</article>
+<article class="card">
+<div class="photo"><img src="909-jeans.jpg" alt="909 Jeans front and back"></div>
+<div class="details"><span class="name">909 JEANS</span><span class="price">$70.00</span><div class="desc">BLACK · 909 EMBROIDERY</div>
+<div class="sizes"><button onclick="size(this)">28</button><button onclick="size(this)">30</button><button class="active" onclick="size(this)">32</button><button onclick="size(this)">34</button><button onclick="size(this)">36</button></div>
+<button class="add" onclick="add('jeans','909 JEANS',70,'909-jeans.jpg')">ADD TO CART</button></div>
+</article>
+<article class="card">
+<div class="photo"><img src="909-sheisty.jpg" alt="909 Sheisty front and back"></div>
+<div class="details"><span class="name">909 SHEISTY</span><span class="price">$30.00</span><div class="desc">BLACK · 909 FACE COVER</div>
+<div class="sizes"><button class="active" onclick="size(this)">ONE SIZE</button></div>
+<button class="add" onclick="add('sheisty','909 SHEISTY',30,'909-sheisty.jpg')">ADD TO CART</button></div>
+</article>
+</div>
+</section>
+
+<section class="section">
+<div class="perks"><div class="perk"><b>FAST SHIPPING</b><span>TRACKED DELIVERY</span></div><div class="perk"><b>SECURE CHECKOUT</b><span>SAFE PAYMENT</span></div><div class="perk"><b>909 QUALITY</b><span>BUILT TO LAST</span></div></div>
+</section>
+
+<section class="section" id="about">
+<div class="about"><div><div class="kicker">THE 909 STANDARD</div><h3>RIDE<br>DIFFERENT.</h3></div>
+<div><p>909 is for people who don't need permission to stand out. No fake hype. No unnecessary noise. Just the clothes, the movement, and the number.</p><p>DROP 01 is the start.</p>
+<form class="signup" onsubmit="join(event)"><input type="email" required placeholder="EMAIL FOR 909 UPDATES"><button>JOIN</button></form></div></div>
+</section>
+</main>
+<footer><span>© 909CO</span><span>RIDE DIFFERENT.</span></footer>
+
+<aside class="drawer" id="drawer">
+<div class="drawerTop"><h2>YOUR CART (<span id="drawerCount">0</span>)</h2><button class="close" onclick="closeCart()">×</button></div>
+<div id="items"></div>
+<div id="empty" class="empty">YOUR CART IS EMPTY.</div>
+<div class="total"><span>SUBTOTAL</span><span id="total">$0.00</span></div>
+<button class="checkout" onclick="checkout()">CHECKOUT</button>
+</aside>
+
 <script>
-let n=0;document.querySelectorAll(".card").forEach(c=>c.onclick=()=>{if(!c.querySelector(".price").textContent.includes("COMING"))document.querySelector("#count").textContent=++n})
-</script></body></html>
+let cart=JSON.parse(localStorage.getItem("909cart")||"[]");
+function save(){localStorage.setItem("909cart",JSON.stringify(cart));render();}
+function add(id,name,price,img){let x=cart.find(i=>i.id===id);if(x)x.qty++;else cart.push({id,name,price,img,qty:1});save();openCart();}
+function change(id,d){let x=cart.find(i=>i.id===id);if(!x)return;x.qty+=d;if(x.qty<=0)cart=cart.filter(i=>i.id!==id);save();}
+function removeItem(id){cart=cart.filter(i=>i.id!==id);save();}
+function render(){let count=cart.reduce((s,i)=>s+i.qty,0),total=cart.reduce((s,i)=>s+i.price*i.qty,0);document.getElementById("cartCount").textContent=count;document.getElementById("drawerCount").textContent=count;document.getElementById("total").textContent="$"+total.toFixed(2);document.getElementById("empty").style.display=cart.length?"none":"block";document.getElementById("items").innerHTML=cart.map(i=>`<div class="cartItem"><img src="${i.img}"><div><b>${i.name}</b><small>$${i.price.toFixed(2)}</small><div class="qty"><button onclick="change('${i.id}',-1)">−</button><span>${i.qty}</span><button onclick="change('${i.id}',1)">+</button></div></div><button class="remove" onclick="removeItem('${i.id}')">REMOVE</button></div>`).join("");}
+function openCart(){document.getElementById("drawer").classList.add("open");render()}function closeCart(){document.getElementById("drawer").classList.remove("open")}
+function size(b){[...b.parentElement.children].forEach(x=>x.classList.remove("active"));b.classList.add("active")}
+function checkout(){if(!cart.length){alert("Your cart is empty.");return}alert("Cart is working. The final payment/checkout link still needs to be connected to your payment provider.")}
+function join(e){e.preventDefault();alert("You're on the 909 list.");e.target.reset()}
+render();
+</script>
+</body></html>
