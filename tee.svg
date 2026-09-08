@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700">
+<rect width="700" height="700" fill="#171717"/>
+<path d="M205 155 L285 105 Q350 135 415 105 L495 155 570 250 475 315 435 270 435 600 265 600 265 270 225 315 130 250Z" fill="#090909" stroke="#555" stroke-width="5"/>
+<path d="M285 105 Q350 135 415 105" fill="none" stroke="#555" stroke-width="5"/>
+<text x="420" y="270" fill="white" font-size="48" font-family="cursive" font-style="italic">909</text>
+</svg>

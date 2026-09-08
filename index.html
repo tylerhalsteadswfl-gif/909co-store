@@ -3,98 +3,50 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>909 — RIDE DIFFERENT.</title>
+<title>909CO — More Than Just Clothing</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Permanent+Marker&display=swap');
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#050505;color:#fff;font-family:Inter,Arial,sans-serif}
-button,input{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;background-image:url("hero.jpg");background-size:cover;background-position:center;mix-blend-mode:screen}
-header{position:sticky;top:0;z-index:20;height:72px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(3,3,3,.9);border-bottom:1px solid #292929;backdrop-filter:blur(14px)}
-.logo{font-family:"Permanent Marker",cursive;font-size:36px;transform:rotate(-6deg);letter-spacing:-3px}.nav{display:flex;gap:34px;font-size:11px;font-weight:900;letter-spacing:2px}.nav a:hover{opacity:.55}
-.cartBtn{border:1px solid #555;background:#090909;color:#fff;padding:10px 14px;font-size:11px;font-weight:900;letter-spacing:1px}
-.hero{min-height:78vh;display:grid;grid-template-columns:1fr 1.35fr;align-items:center;padding:70px 5%;gap:30px;background-image:linear-gradient(90deg,rgba(0,0,0,.98) 0%,rgba(0,0,0,.58) 48%,rgba(0,0,0,.18)),url("hero.jpg");background-size:cover;background-position:center;border-bottom:1px solid #292929}
-.heroLogo{font-family:"Permanent Marker",cursive;font-size:clamp(100px,17vw,220px);line-height:.7;letter-spacing:-9px;transform:rotate(-5deg)}.tag{margin-top:42px;font-size:18px;letter-spacing:5px;font-weight:900}.hero p{color:#aaa;max-width:430px;line-height:1.7;font-size:13px}.cta{display:inline-block;margin-top:22px;background:#fff;color:#050505;padding:15px 24px;font-size:11px;font-weight:900;letter-spacing:2px}
-.section{padding:80px 5%;border-bottom:1px solid #242424}.head{display:flex;align-items:end;justify-content:space-between;margin-bottom:28px}.head h2{font-size:clamp(38px,6vw,72px);letter-spacing:-4px;margin:0;font-weight:900}.head span{font-size:10px;letter-spacing:3px;color:#777}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:#0a0a0a;border:1px solid #292929}.photo{aspect-ratio:1/1.12;background:#111;display:flex;align-items:center;justify-content:center;overflow:hidden}.photo img{width:100%;height:100%;object-fit:cover;display:block}.details{padding:18px}.name{font-size:14px;font-weight:900;letter-spacing:1px}.price{float:right;font-weight:900}.desc{clear:both;padding-top:8px;color:#777;font-size:10px;letter-spacing:1.5px}.sizes{display:flex;gap:7px;margin-top:15px}.sizes button{background:#090909;border:1px solid #444;color:#fff;padding:9px 11px;font-size:10px;font-weight:800}.sizes button.active{background:#fff;color:#000}.add{width:100%;margin-top:13px;padding:14px;border:0;background:#fff;color:#000;font-size:10px;font-weight:900;letter-spacing:2px}.add:hover{background:#ddd}
-.perks{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #292929}.perk{padding:25px;text-align:center;border-right:1px solid #292929}.perk:last-child{border:0}.perk b{display:block;font-size:11px;letter-spacing:2px}.perk span{color:#777;font-size:10px;line-height:2}
-.about{display:grid;grid-template-columns:1fr 1fr;gap:70px}.about h3{font-family:"Permanent Marker",cursive;font-size:clamp(48px,7vw,90px);line-height:.9;transform:rotate(-3deg);margin:0}.about p{color:#aaa;line-height:1.8;font-size:14px}.signup{display:flex;margin-top:25px}.signup input{flex:1;background:#090909;border:1px solid #444;color:#fff;padding:14px}.signup button{border:0;background:#fff;padding:14px 20px;font-weight:900}
-footer{padding:35px 5%;display:flex;justify-content:space-between;color:#777;font-size:10px;letter-spacing:1px}
-.drawer{position:fixed;right:0;top:0;height:100vh;width:min(420px,94vw);background:#080808;border-left:1px solid #444;z-index:50;transform:translateX(105%);transition:.25s;box-shadow:-20px 0 60px #000;padding:24px;overflow:auto}.drawer.open{transform:translateX(0)}.drawerTop{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333;padding-bottom:18px}.drawerTop h2{font-size:14px;letter-spacing:2px}.close{background:none;border:0;color:#fff;font-size:25px}.cartItem{display:grid;grid-template-columns:75px 1fr auto;gap:12px;padding:17px 0;border-bottom:1px solid #292929}.cartItem img{width:75px;height:85px;object-fit:cover}.cartItem b{font-size:12px}.cartItem small{display:block;color:#777;margin-top:5px}.qty{display:flex;gap:5px;align-items:center;margin-top:10px}.qty button{width:25px;height:25px;background:#111;border:1px solid #444;color:#fff}.remove{background:none;border:0;color:#888;font-size:12px}.total{display:flex;justify-content:space-between;font-weight:900;margin:25px 0}.checkout{width:100%;padding:16px;background:#fff;border:0;font-weight:900;letter-spacing:2px}.empty{color:#777;text-align:center;padding:60px 0;font-size:13px}
-@media(max-width:750px){header{padding:0 18px}.nav{display:none}.hero{grid-template-columns:1fr;min-height:75vh;padding:60px 18px;background-position:60% center}.heroLogo{font-size:30vw}.section{padding:60px 18px}.grid{grid-template-columns:1fr}.perks{grid-template-columns:1fr}.perk{border-right:0;border-bottom:1px solid #292929}.perk:last-child{border:0}.about{grid-template-columns:1fr;gap:35px}footer{padding:28px 18px}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#070707;color:#fff;font-family:Arial,Helvetica,sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}.wrap{max-width:1400px;margin:auto;padding:0 28px}
+header{height:78px;border-bottom:1px solid #252525;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#070707ee;backdrop-filter:blur(8px);z-index:10}
+.logo,.script{font-family:cursive;font-style:italic;font-weight:700}.logo{font-size:48px}.nav{display:flex;gap:38px;font-size:13px;letter-spacing:2px}.actions{display:flex;gap:18px;font-size:22px}
+.hero{min-height:470px;background:linear-gradient(90deg,#050505 0%,#05050555 55%,#050505aa),url("hero.png") center/cover;display:flex;align-items:center}
+.heroText{max-width:560px}.heroText .script{font-size:125px;line-height:.8}.tag{letter-spacing:7px;font-size:17px;margin:25px 0}.btn{display:inline-block;background:#fff;color:#000;padding:15px 30px;font-weight:700;letter-spacing:2px;border:0;cursor:pointer}
+.section{padding:45px 0}.sectionTitle{display:flex;align-items:center;gap:20px;letter-spacing:5px;font-size:16px}.sectionTitle:after{content:"";height:1px;background:#333;flex:1}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:25px}.card{background:#0d0d0d;border:1px solid #252525;padding-bottom:18px}.productImg{width:100%;aspect-ratio:1/1;display:block;background:#171717}.info{padding:15px}.name{font-size:16px;letter-spacing:1px}.price{margin-top:6px;color:#ccc}.sizes{display:flex;gap:7px;margin:15px 0;flex-wrap:wrap}.size{background:#090909;color:#fff;border:1px solid #444;padding:8px 13px;cursor:pointer}.size.active{background:#fff;color:#000}.add{width:100%;padding:13px;border:0;background:#fff;color:#000;font-weight:700;cursor:pointer;letter-spacing:1px}
+.coming{grid-template-columns:repeat(5,1fr)}.coming .card{padding-bottom:12px}.coming .info{padding:10px}.coming .name{font-size:12px}.cart{position:fixed;right:18px;top:95px;width:340px;background:#090909;border:1px solid #444;padding:18px;z-index:20;display:none;box-shadow:0 20px 60px #000}.cart.open{display:block}.cart h3{margin:0 0 15px;letter-spacing:2px}.cartItem{display:flex;gap:10px;border-top:1px solid #292929;padding:12px 0}.thumb{width:55px;height:55px;object-fit:cover;background:#171717}.cartItem .grow{flex:1}.qty{display:flex;gap:8px;align-items:center;margin-top:7px}.qty button{background:#111;color:#fff;border:1px solid #444;width:24px;height:24px}.cartTotal{display:flex;justify-content:space-between;border-top:1px solid #444;padding-top:14px;margin-top:8px;font-weight:700}
+footer{border-top:1px solid #292929;padding:35px 0 50px;display:flex;justify-content:space-between;gap:30px;align-items:end}.email{display:flex}.email input{background:#111;border:1px solid #444;color:#fff;padding:13px;width:260px}.email button{border:0;background:#fff;padding:13px 18px}.muted{color:#888;font-size:12px;letter-spacing:1px}
+@media(max-width:800px){.nav{display:none}.wrap{padding:0 16px}.hero{min-height:430px}.heroText .script{font-size:90px}.grid{grid-template-columns:1fr}.coming{grid-template-columns:repeat(2,1fr)}.cart{left:16px;right:16px;width:auto}footer{display:block}.email{margin:20px 0}.email input{width:100%}}
 </style>
 </head>
 <body>
-<header>
-<a class="logo" href="#">909</a>
-<nav class="nav"><a href="#shop">SHOP</a><a href="#about">ABOUT</a></nav>
-<button class="cartBtn" onclick="openCart()">CART (<span id="cartCount">0</span>)</button>
-</header>
-
+<header><div class="wrap" style="width:100%;display:flex;align-items:center;justify-content:space-between"><a class="logo" href="#">909</a><nav class="nav"><a href="#shop">SHOP</a><a href="#coming">COMING SOON</a><a href="#about">ABOUT</a></nav><div class="actions"><span>⌕</span><button id="cartBtn" style="background:none;color:#fff;border:0;font-size:22px;cursor:pointer">🛒 <b id="count">0</b></button></div></div></header>
 <main>
-<section class="hero">
-<div>
-<div class="heroLogo">909</div>
-<div class="tag">MORE THAN JUST CLOTHING.</div>
-<p>Built for the ones who move different. DROP 01 — black essentials made to stand out without trying.</p>
-<a class="cta" href="#shop">SHOP NOW →</a>
-</div>
-</section>
-
-<section class="section" id="shop">
-<div class="head"><h2>DROP 01</h2><span>3 PRODUCTS</span></div>
-<div class="grid">
-<article class="card" data-id="tee">
-<div class="photo"><img src="909-tee.jpg" alt="909 Tee front and back"></div>
-<div class="details"><span class="name">909 TEE</span><span class="price">$20.00</span><div class="desc">BLACK / WHITE · SIGNATURE 909</div>
-<div class="sizes"><button class="active" onclick="size(this)">S</button><button onclick="size(this)">M</button><button onclick="size(this)">L</button><button onclick="size(this)">XL</button></div>
-<button class="add" onclick="add('tee','909 TEE',20,'909-tee.jpg')">ADD TO CART</button></div>
-</article>
-<article class="card">
-<div class="photo"><img src="909-jeans.jpg" alt="909 Jeans front and back"></div>
-<div class="details"><span class="name">909 JEANS</span><span class="price">$70.00</span><div class="desc">BLACK · 909 EMBROIDERY</div>
-<div class="sizes"><button onclick="size(this)">28</button><button onclick="size(this)">30</button><button class="active" onclick="size(this)">32</button><button onclick="size(this)">34</button><button onclick="size(this)">36</button></div>
-<button class="add" onclick="add('jeans','909 JEANS',70,'909-jeans.jpg')">ADD TO CART</button></div>
-</article>
-<article class="card">
-<div class="photo"><img src="909-sheisty.jpg" alt="909 Sheisty front and back"></div>
-<div class="details"><span class="name">909 SHEISTY</span><span class="price">$30.00</span><div class="desc">BLACK · 909 FACE COVER</div>
-<div class="sizes"><button class="active" onclick="size(this)">ONE SIZE</button></div>
-<button class="add" onclick="add('sheisty','909 SHEISTY',30,'909-sheisty.jpg')">ADD TO CART</button></div>
-</article>
-</div>
-</section>
-
-<section class="section">
-<div class="perks"><div class="perk"><b>FAST SHIPPING</b><span>TRACKED DELIVERY</span></div><div class="perk"><b>SECURE CHECKOUT</b><span>SAFE PAYMENT</span></div><div class="perk"><b>909 QUALITY</b><span>BUILT TO LAST</span></div></div>
-</section>
-
-<section class="section" id="about">
-<div class="about"><div><div class="kicker">THE 909 STANDARD</div><h3>RIDE<br>DIFFERENT.</h3></div>
-<div><p>909 is for people who don't need permission to stand out. No fake hype. No unnecessary noise. Just the clothes, the movement, and the number.</p><p>DROP 01 is the start.</p>
-<form class="signup" onsubmit="join(event)"><input type="email" required placeholder="EMAIL FOR 909 UPDATES"><button>JOIN</button></form></div></div>
-</section>
+<section class="hero"><div class="wrap"><div class="heroText"><div class="script">909</div><div class="tag">MORE THAN JUST CLOTHING.</div><a class="btn" href="#shop">SHOP NOW →</a></div></div></section>
+<section class="section wrap" id="shop"><div class="sectionTitle">FEATURED COLLECTION</div><div class="grid">
+<div class="card"><img class="productImg" src="tee.svg"><div class="info"><div class="name">909 TEE</div><div class="price">$34.99</div><div class="sizes" data-product="tee"><button class="size">S</button><button class="size">M</button><button class="size active">L</button><button class="size">XL</button><button class="size">XXL</button></div><button class="add" data-name="909 TEE" data-price="34.99" data-img="tee.svg">ADD TO CART</button></div></div>
+<div class="card"><img class="productImg" src="jeans.svg"><div class="info"><div class="name">909 JEANS</div><div class="price">$69.99</div><div class="sizes"><button class="size">28</button><button class="size">30</button><button class="size active">32</button><button class="size">34</button><button class="size">36</button></div><button class="add" data-name="909 JEANS" data-price="69.99" data-img="jeans.svg">ADD TO CART</button></div></div>
+<div class="card"><img class="productImg" src="sheisty.svg"><div class="info"><div class="name">909 SHEISTY</div><div class="price">$29.99</div><div style="height:55px"></div><button class="add" data-name="909 SHEISTY" data-price="29.99" data-img="sheisty.svg">ADD TO CART</button></div></div>
+</div></section>
+<section class="section wrap" id="coming"><div class="sectionTitle">COMING SOON</div><div class="grid coming">
+<div class="card"><img class="productImg" src="tee.svg"><div class="info"><div class="name">909 ZIP UP</div><div class="muted">COMING SOON</div></div></div>
+<div class="card"><img class="productImg" src="tee.svg"><div class="info"><div class="name">909 LONG SLEEVE</div><div class="muted">COMING SOON</div></div></div>
+<div class="card"><img class="productImg" src="jeans.svg"><div class="info"><div class="name">909 CARGO PANTS</div><div class="muted">COMING SOON</div></div></div>
+<div class="card"><img class="productImg" src="sheisty.svg"><div class="info"><div class="name">909 BANDANA</div><div class="muted">COMING SOON</div></div></div>
+<div class="card"><img class="productImg" src="sheisty.svg"><div class="info"><div class="name">909 BACKPACK</div><div class="muted">COMING SOON</div></div></div>
+</div></section>
+<section class="section wrap" id="about"><div class="sectionTitle">909CO</div><p style="max-width:650px;color:#aaa;line-height:1.7">Built for people who move different. 909CO is a black-and-white streetwear concept focused on clean graphics, aggressive silhouettes, and a signature handwritten 909 mark.</p></section>
 </main>
-<footer><span>© 909CO</span><span>RIDE DIFFERENT.</span></footer>
-
-<aside class="drawer" id="drawer">
-<div class="drawerTop"><h2>YOUR CART (<span id="drawerCount">0</span>)</h2><button class="close" onclick="closeCart()">×</button></div>
-<div id="items"></div>
-<div id="empty" class="empty">YOUR CART IS EMPTY.</div>
-<div class="total"><span>SUBTOTAL</span><span id="total">$0.00</span></div>
-<button class="checkout" onclick="checkout()">CHECKOUT</button>
-</aside>
-
+<div class="cart" id="cart"><div style="display:flex;justify-content:space-between"><h3>YOUR CART</h3><button id="close" style="background:none;color:#fff;border:0;font-size:20px">×</button></div><div id="items"></div><div class="cartTotal"><span>SUBTOTAL</span><span id="total">$0.00</span></div><button class="btn" style="width:100%;margin-top:15px" onclick="alert('Connect your payment provider to enable checkout.')">CHECKOUT →</button></div>
+<footer class="wrap"><div><div class="logo">909</div><div class="muted">© 2026 909CO</div></div><form class="email" onsubmit="event.preventDefault();alert('Thanks for joining 909CO.')"><input placeholder="Enter your email for updates"><button>→</button></form><div class="muted">INSTAGRAM &nbsp; TIKTOK &nbsp; YOUTUBE</div></footer>
 <script>
 let cart=JSON.parse(localStorage.getItem("909cart")||"[]");
-function save(){localStorage.setItem("909cart",JSON.stringify(cart));render();}
-function add(id,name,price,img){let x=cart.find(i=>i.id===id);if(x)x.qty++;else cart.push({id,name,price,img,qty:1});save();openCart();}
-function change(id,d){let x=cart.find(i=>i.id===id);if(!x)return;x.qty+=d;if(x.qty<=0)cart=cart.filter(i=>i.id!==id);save();}
-function removeItem(id){cart=cart.filter(i=>i.id!==id);save();}
-function render(){let count=cart.reduce((s,i)=>s+i.qty,0),total=cart.reduce((s,i)=>s+i.price*i.qty,0);document.getElementById("cartCount").textContent=count;document.getElementById("drawerCount").textContent=count;document.getElementById("total").textContent="$"+total.toFixed(2);document.getElementById("empty").style.display=cart.length?"none":"block";document.getElementById("items").innerHTML=cart.map(i=>`<div class="cartItem"><img src="${i.img}"><div><b>${i.name}</b><small>$${i.price.toFixed(2)}</small><div class="qty"><button onclick="change('${i.id}',-1)">−</button><span>${i.qty}</span><button onclick="change('${i.id}',1)">+</button></div></div><button class="remove" onclick="removeItem('${i.id}')">REMOVE</button></div>`).join("");}
-function openCart(){document.getElementById("drawer").classList.add("open");render()}function closeCart(){document.getElementById("drawer").classList.remove("open")}
-function size(b){[...b.parentElement.children].forEach(x=>x.classList.remove("active"));b.classList.add("active")}
-function checkout(){if(!cart.length){alert("Your cart is empty.");return}alert("Cart is working. The final payment/checkout link still needs to be connected to your payment provider.")}
-function join(e){e.preventDefault();alert("You're on the 909 list.");e.target.reset()}
-render();
+const $=s=>document.querySelector(s);
+function save(){localStorage.setItem("909cart",JSON.stringify(cart));render()}
+function render(){let n=cart.reduce((a,x)=>a+x.qty,0),t=cart.reduce((a,x)=>a+x.price*x.qty,0);$("#count").textContent=n;$("#total").textContent="$"+t.toFixed(2);$("#items").innerHTML=cart.map((x,i)=>`<div class="cartItem"><img class="thumb" src="${x.img}"><div class="grow"><b>${x.name}</b><div class="muted">$${x.price.toFixed(2)}</div><div class="qty"><button onclick="change(${i},-1)">−</button>${x.qty}<button onclick="change(${i},1)">+</button><button onclick="removeItem(${i})" style="margin-left:auto">×</button></div></div></div>`).join("")||'<div class="muted" style="padding:20px 0">Your cart is empty.</div>'}
+function change(i,d){cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);save()} function removeItem(i){cart.splice(i,1);save()}
+document.querySelectorAll(".add").forEach(b=>b.onclick=()=>{let name=b.dataset.name,p=+b.dataset.price,old=cart.find(x=>x.name===name);old?old.qty++:cart.push({name,price:p,img:b.dataset.img,qty:1});save();$("#cart").classList.add("open")});
+document.querySelectorAll(".sizes").forEach(g=>g.querySelectorAll(".size").forEach(b=>b.onclick=()=>{g.querySelectorAll(".size").forEach(x=>x.classList.remove("active"));b.classList.add("active")}));
+$("#cartBtn").onclick=()=>$("#cart").classList.toggle("open");$("#close").onclick=()=>$("#cart").classList.remove("open");render();
 </script>
 </body></html>
