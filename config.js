@@ -1,5 +1,4 @@
-// 909CO OWNER ADMIN CONFIG
-// Replace these two values with your Supabase project's URL and anon/public key.
-// Do NOT put a service_role key here.
-window.SUPABASE_URL = 'PASTE_YOUR_SUPABASE_PROJECT_URL_HERE';
-window.SUPABASE_ANON_KEY = 'PASTE_YOUR_SUPABASE_ANON_KEY_HERE';
+// 909CO GOOGLE ANALYTICS CONFIG
+window.GA_MEASUREMENT_ID = 'G-J9KWC4L4HZ';
+window.GA_PROPERTY_ID = '553886139';
+window.GOOGLE_CLIENT_ID = '93122236148-kpj6cfti1bl2v40e1ovgbpf6qpfshl9t.apps.googleusercontent.com';

@@ -1,47 +1,63 @@
-909CO ADMIN SETUP
-=================
+909CO — GOOGLE ANALYTICS ADMIN SETUP
+=====================================
 
-The admin page is at:
+This version removes Supabase completely. The public website sends traffic to Google Analytics 4, and /admin.html reads the GA4 report using Google sign-in.
+
+WHAT THE ADMIN SHOWS
+- Website views
+- Average time stayed (average session duration)
+- Daily views + average time for the last 28 days
+
+Google Analytics' Data API supports the screenPageViews and averageSessionDuration metrics.
+
+1) CREATE GOOGLE ANALYTICS
+- Go to https://analytics.google.com/
+- Create a GA4 property for 909CO if you do not already have one.
+- Add a Web data stream for https://909co.store
+- Leave Enhanced Measurement enabled.
+- Copy the Measurement ID that starts with G-.
+
+2) GET YOUR GA4 PROPERTY ID
+- Google Analytics → Admin → Property Settings.
+- Copy the numeric Property ID.
+
+3) CREATE A GOOGLE OAUTH WEB CLIENT
+- Go to https://console.cloud.google.com/
+- Select/create a Google Cloud project.
+- Enable “Google Analytics Data API”.
+- Configure the OAuth consent screen if Google asks.
+- Create Credentials → OAuth client ID → Web application.
+- Add this Authorized JavaScript origin:
+  https://909co.store
+- Copy the Client ID ending in .apps.googleusercontent.com.
+
+4) EDIT config.js
+Replace the three placeholders:
+window.GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+window.GA_PROPERTY_ID = '123456789';
+window.GOOGLE_CLIENT_ID = 'YOUR_WEB_OAUTH_CLIENT_ID.apps.googleusercontent.com';
+
+5) UPLOAD TO GITHUB
+Upload/replace these files in the ROOT of your GitHub Pages repo:
+- index.html
+- admin.html
+- config.js
+- all the existing JPG/PNG product files
+
+6) USE THE ADMIN
+Open:
 https://909co.store/admin.html
 
-The same owner account can be used on your iPhone and computer.
+Tap SIGN IN WITH GOOGLE and choose the Google account that has access to the GA4 property. The Google Analytics Data API requires authenticated access to report data; the admin does not store a Google password or service-account secret.
 
-IMPORTANT: GitHub Pages cannot securely store an owner password or share cart/visitor data between devices by itself. The admin dashboard therefore uses Supabase authentication + database.
+IMPORTANT
+- Do NOT put a Google service-account JSON key or other private secret in GitHub.
+- The Google Client ID and GA Measurement ID are not passwords.
+- Google says data collection can take up to about 30 minutes to begin; use the GA4 Realtime report to verify the tag.
 
-1. Create a Supabase project.
-2. In Supabase, open SQL Editor and create the tables/policies needed for site_visits and cart_sessions.
-3. Copy your Project URL and anon/public key.
-4. Open config.js in this folder and replace the two PASTE_ values.
-5. Upload config.js, index.html, admin.html, and all JPG/PNG files to the ROOT of your GitHub Pages repo.
-6. On BOTH your phone and computer, open https://909co.store/admin.html and log in with the same Supabase owner account.
-
-OWNER-ONLY BEHAVIOR
-- Normal shoppers do not get the OWNER ADMIN button.
-- After the owner signs in, the OWNER ADMIN button can appear at the top-left of the store on that device.
-- The /admin.html page always requires the authenticated owner account.
-
-PRODUCTS
+PRODUCTS INCLUDED
 - PINK — $23
 - 909 TEE — WHITE/BLACK — $21
 - 909 TEE — $20
 - 909 JEANS — $30
 - 909 SHEISTY — $12
-
-
-=== VIEWS + TIME-ON-SITE UPDATE ===
-Run this in Supabase SQL Editor after the original setup SQL:
-
-alter table public.site_visits add column if not exists started_at timestamptz not null default now();
-alter table public.site_visits add column if not exists duration_seconds integer not null default 0;
-alter table public.site_visits add column if not exists last_seen_at timestamptz not null default now();
-
-create policy "Anyone can update visit duration"
-on public.site_visits
-for update
-to anon, authenticated
-using (true)
-with check (true);
-
-create index if not exists site_visits_started_at_idx on public.site_visits(started_at desc);
-
-The admin panel now shows only website views, unique visitors, and average time on site, plus a simple recent-visits table. Cart analytics are removed from the admin panel.
