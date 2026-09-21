@@ -25,26 +25,42 @@ footer{border-top:1px solid #242424;padding:35px 28px 55px;color:#aaa;font-size:
 <script>
 (function(){var id=window.GA_MEASUREMENT_ID;if(!id||id.indexOf('G-')!==0)return;var sc=document.createElement('script');sc.async=true;sc.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(id);document.head.appendChild(sc)})();window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());if(window.GA_MEASUREMENT_ID)gtag('config',window.GA_MEASUREMENT_ID);
 const products=[
-{id:'sheisty',name:'909 SHEISTY',price:12,images:['sheisty-front.png','sheisty-back.png'],sizes:['XS','S','M','L'],desc:'Black 909 sheisty with the 909 mark positioned across the mouth area. Front and back views included.'},
-{id:'pink-sheisty',name:'PINK SHEISTY',price:12,images:['pink-sheisty-front.png','pink-sheisty-side.png'],sizes:['XS','S','M','L'],desc:'Black sheisty featuring the signature pink 909 graphic across the mouth area. Available in XS, S, M, and L.'},
-{id:'pink',name:'PINK',price:25,images:['pink-front.jpg','pink-back.jpg'],sizes:['XS','S','M','L'],desc:'Black tee with the pink 909 graphic. Front and back views included.'},
-{id:'white',name:'909 TEE — WHITE/BLACK',price:25,images:['white-front.jpg','white-back.jpg'],sizes:['XS','S','M','L'],desc:'Black tee with the white 909 graphic. Front and back views included.'}
+{id:'sheisty',name:'909 SHEISTY',price:12,shopifyId:'10603070947512',match:['sheisty'],images:['sheisty-front.png','sheisty-back.png'],sizes:['XS','S','M','L'],desc:'Black 909 sheisty with the 909 mark positioned across the mouth area. Front and back views included.'},
+{id:'pink-sheisty',name:'PINK SHEISTY',price:12,shopifyId:'10604561924280',match:['pink','sheisty'],images:['pink-sheisty-front.png','pink-sheisty-side.png'],sizes:['XS','S','M','L'],desc:'Black sheisty featuring the signature pink 909 graphic across the mouth area. Available in XS, S, M, and L.'},
+{id:'pink',name:'PINK',price:25,shopifyId:'10567807533240',match:['pink'],images:['pink-front.jpg','pink-back.jpg'],sizes:['XS','S','M','L'],desc:'Black tee with the pink 909 graphic. Front and back views included.'},
+{id:'white',name:'909 TEE — WHITE/BLACK',price:25,shopifyId:'10603051090104',match:['white'],images:['white-front.jpg','white-back.jpg'],sizes:['XS','S','M','L'],desc:'Black tee with the white 909 graphic. Front and back views included.'}
 ];
 const SHOPIFY_DOMAIN='n1bwwm-j8.myshopify.com',SHOPIFY_TOKEN='a841d65c14d5a591825106830e0dc2de';
 let cart=JSON.parse(localStorage.getItem('909cart')||'[]').filter(x=>x.id!=='tee'),current=null,shopifyBusy=false;
 localStorage.setItem('909cart',JSON.stringify(cart));const $=s=>document.querySelector(s);function money(n){return '$'+Number(n).toFixed(2)}
-async function shopifyQuery(query,variables={}){const r=await fetch(`https://${SHOPIFY_DOMAIN}/api/2025-01/graphql.json`,{method:'POST',headers:{'Content-Type':'application/json','X-Shopify-Storefront-Access-Token':SHOPIFY_TOKEN},body:JSON.stringify({query,variables})});const j=await r.json();if(j.errors?.length)throw new Error(j.errors.map(e=>e.message).join('; '));return j.data}
+async function shopifyQuery(query,variables={}){const r=await fetch(`https://${SHOPIFY_DOMAIN}/api/2026-07/graphql.json`,{method:'POST',headers:{'Content-Type':'application/json','X-Shopify-Storefront-Access-Token':SHOPIFY_TOKEN},body:JSON.stringify({query,variables})});const j=await r.json();if(j.errors?.length)throw new Error(j.errors.map(e=>e.message).join('; '));return j.data}
 const productCache={};
 async function getShopifyProduct(p){
  if(productCache[p.id])return productCache[p.id];
- // IMPORTANT: resolve the Shopify product from the product NAME, never from an old numeric ID.
- // This prevents a wrong/stale product ID from sending checkout to another item.
+ const norm=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+ const good=(x)=>{
+  if(!x)return false;
+  const t=norm(x.title);
+  const words=p.match||[];
+  if(!words.every(w=>t.includes(norm(w))))return false;
+  if(p.id==='pink' && t.includes('sheisty'))return false;
+  return true;
+ };
+ // First try the product ID already tied to this item. Older versions incorrectly
+ // assumed the IDs matched the visible names, so we verify the returned title before using it.
+ if(p.shopifyId){
+  try{
+   const byId=await shopifyQuery(`query($id:ID!){product(id:$id){id title handle variants(first:100){nodes{id title availableForSale price{amount} selectedOptions{name value}}}}}`,{id:`gid://shopify/Product/${p.shopifyId}`});
+   if(good(byId.product)){productCache[p.id]=byId.product;return byId.product;}
+  }catch(e){}
+ }
+ // If the ID is stale, search the published Storefront catalog and match by product type.
  const data=await shopifyQuery(`query{products(first:100){nodes{id title handle variants(first:100){nodes{id title availableForSale price{amount} selectedOptions{name value}}}}}}`);
- const wanted=p.name.trim().toLowerCase();
- const exact=data.products.nodes.find(x=>x.title.trim().toLowerCase()===wanted);
- if(!exact){throw new Error('Shopify product not found: '+p.name+'. Make sure the Shopify product is published to the Storefront sales channel.');}
- productCache[p.id]=exact;
- return exact;
+ const candidates=(data.products?.nodes||[]).filter(good);
+ const priced=candidates.filter(x=>{const a=x.variants.nodes.map(v=>Number(v.price.amount));return a.some(v=>Math.abs(v-p.price)<0.01)});
+ const exact=(priced.length?priced:candidates)[0];
+ if(!exact)throw new Error('Shopify product not found: '+p.name+'. The Shopify product must be published to the Storefront sales channel.');
+ productCache[p.id]=exact;return exact;
 }
 async function findVariant(p,size){
  const sp=await getShopifyProduct(p);
