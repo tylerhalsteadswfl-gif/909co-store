@@ -35,7 +35,18 @@ let cart=JSON.parse(localStorage.getItem('909cart')||'[]').filter(x=>x.id!=='tee
 localStorage.setItem('909cart',JSON.stringify(cart));const $=s=>document.querySelector(s);function money(n){return '$'+Number(n).toFixed(2)}
 async function shopifyQuery(query,variables={}){const r=await fetch(`https://${SHOPIFY_DOMAIN}/api/2025-01/graphql.json`,{method:'POST',headers:{'Content-Type':'application/json','X-Shopify-Storefront-Access-Token':SHOPIFY_TOKEN},body:JSON.stringify({query,variables})});const j=await r.json();if(j.errors?.length)throw new Error(j.errors.map(e=>e.message).join('; '));return j.data}
 const productCache={};
-async function getShopifyProduct(p){if(productCache[p.id])return productCache[p.id];const data=await shopifyQuery(`query($id:ID!){product(id:$id){id title variants(first:100){nodes{id title availableForSale price{amount} selectedOptions{name value}}}}}`,{id:`gid://shopify/Product/${p.shopifyId}`});if(!data.product)throw new Error('Shopify product not found: '+p.name);productCache[p.id]=data.product;return data.product}
+async function getShopifyProduct(p){
+ if(productCache[p.id])return productCache[p.id];
+ // Find the product by its exact Shopify title first. This prevents a stale/wrong
+ // numeric product ID from sending checkout to a different product.
+ const byTitle=await shopifyQuery(`query($q:String!){products(first:10,query:$q){nodes{id title variants(first:100){nodes{id title availableForSale price{amount} selectedOptions{name value}}}}}}`,{q:`title:\"${p.name}\"`});
+ const exact=byTitle.products.nodes.find(x=>x.title.trim().toLowerCase()===p.name.trim().toLowerCase());
+ if(exact){productCache[p.id]=exact;return exact}
+ // Fallback to the saved ID if title lookup is unavailable.
+ const data=await shopifyQuery(`query($id:ID!){product(id:$id){id title variants(first:100){nodes{id title availableForSale price{amount} selectedOptions{name value}}}}}`,{id:`gid://shopify/Product/${p.shopifyId}`});
+ if(!data.product)throw new Error('Shopify product not found: '+p.name);
+ productCache[p.id]=data.product;return data.product
+}
 async function findVariant(p,size){const sp=await getShopifyProduct(p);let vs=sp.variants.nodes.filter(v=>v.availableForSale);if(!vs.length)throw new Error(p.name+' is currently sold out.');if(size){let exact=vs.find(v=>v.selectedOptions.some(o=>o.name.toLowerCase()==='size'&&o.value.toLowerCase()===size.toLowerCase()));if(exact)return exact;let title=vs.find(v=>v.title.toLowerCase()===size.toLowerCase());if(title)return title;}return vs[0]}
 async function syncShopifyCart(){const lines=[];for(const x of cart){const p=products.find(q=>q.id===x.id);if(!p?.shopifyId)continue;const v=await findVariant(p,x.size);lines.push({merchandiseId:v.id,quantity:x.qty});}if(!lines.length)return null;const data=await shopifyQuery(`mutation($lines:[CartLineInput!]){cartCreate(input:{lines:$lines}){cart{id checkoutUrl}userErrors{field message}}}`,{lines});const err=data.cartCreate.userErrors?.[0];if(err)throw new Error(err.message);return data.cartCreate.cart}
 function renderGrid(){const g=$('#productGrid');g.innerHTML=products.map(p=>`<article class="product" data-id="${p.id}"><div class="photo"><img src="${p.images[0]}" alt="${p.name}"></div><div class="info"><div class="name">${p.name}</div><div class="price">${money(p.price)}</div></div></article>`).join('');g.querySelectorAll('.product').forEach(c=>c.onclick=()=>openProduct(c.dataset.id))}
