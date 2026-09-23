@@ -27,11 +27,12 @@ footer{border-top:1px solid #242424;padding:35px 28px 55px;color:#aaa;font-size:
 <script>
 (function(){var id=window.GA_MEASUREMENT_ID;if(!id||id.indexOf('G-')!==0)return;var sc=document.createElement('script');sc.async=true;sc.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(id);document.head.appendChild(sc)})();window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());if(window.GA_MEASUREMENT_ID)gtag('config',window.GA_MEASUREMENT_ID);
 const products=[
-{id:'sheisty',name:'909 SHEISTY',price:12,images:['sheisty-front.png','sheisty-back.png'],sizes:['XS','S','M','L'],shopifyId:'10603070947512',outOfStock:true,desc:'Black 909 sheisty with the 909 mark positioned across the mouth area. Front and back views included.'},
-{id:'pink-sheisty',name:'PINK SHEISTY',price:12,images:['pink-sheisty-front.png','pink-sheisty-side.png'],sizes:['XS','S','M','L'],shopifyId:'10604561924280',outOfStock:true,desc:'Black sheisty featuring the signature pink 909 graphic across the mouth area. Available in XS, S, M, and L.'},
+{id:'sheisty',name:'909 SHEISTY',price:12,images:['sheisty-front.png','sheisty-back.png'],sizes:['XS','S','M','L'],shopifyId:'10603070947512',outOfStock:false,desc:'Black 909 sheisty with the 909 mark positioned across the mouth area. Front and back views included.'},
+{id:'pink-sheisty',name:'PINK SHEISTY',price:12,images:['pink-sheisty-front.png','pink-sheisty-side.png'],sizes:['XS','S','M','L'],shopifyId:'10604561924280',outOfStock:false,desc:'Black sheisty featuring the signature pink 909 graphic across the mouth area. Available in XS, S, M, and L.'},
 {id:'pink',name:'PINK',price:25,images:['pink-front.jpg','pink-back.jpg'],sizes:['XS','S','M','L'],shopifyId:'10567807533240',outOfStock:true,desc:'Black tee with the pink 909 graphic. Front and back views included.'},
 {id:'white',name:'909 TEE — WHITE/BLACK',price:25,images:['white-front.jpg','white-back.jpg'],sizes:['XS','S','M','L'],shopifyId:'10603051090104',outOfStock:true,desc:'Black tee with the white 909 graphic. Front and back views included.'},
-{id:'old-pink',name:'909 TEE — OLD DESIGN',price:20,images:['old-pink-front.png','old-pink-back.png'],sizes:['XS','S','M','L'],shopifyId:null,outOfStock:false,desc:'Black 909 tee with the original pink 909 graphic. Front and back views included.'}
+{id:'old-pink',name:'909 TEE — OLD DESIGN',price:20,images:['old-pink-front.png','old-pink-back.png'],sizes:['XS','S','M','L'],shopifyId:null,outOfStock:false,desc:'Black 909 tee with the original pink 909 graphic. Front and back views included.'},
+{id:'old-white',name:'909 TEE — OLD DESIGN WHITE',price:20,images:['old-white-front.png','old-white-back.png'],sizes:['XS','S','M','L'],shopifyId:null,outOfStock:false,desc:'Black 909 tee with the original white 909 graphic. Front and back views included.'}
 ];
 const SHOPIFY_DOMAIN='n1bwwm-j8.myshopify.com',SHOPIFY_TOKEN='a841d65c14d5a591825106830e0dc2de';
 let cart=JSON.parse(localStorage.getItem('909cart')||'[]').filter(x=>x.id!=='tee'),current=null,shopifyBusy=false;
