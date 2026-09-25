@@ -27,12 +27,12 @@ footer{border-top:1px solid #242424;padding:35px 28px 55px;color:#aaa;font-size:
 <script>
 (function(){var id=window.GA_MEASUREMENT_ID;if(!id||id.indexOf('G-')!==0)return;var sc=document.createElement('script');sc.async=true;sc.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(id);document.head.appendChild(sc)})();window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());if(window.GA_MEASUREMENT_ID)gtag('config',window.GA_MEASUREMENT_ID);
 const products=[
-{id:'sheisty',name:'909 SHEISTY',price:12,images:['sheisty-front.png','sheisty-back.png'],sizes:['XS','S','M','L'],shopifyId:'10603070947512',desc:'Black 909 sheisty with the 909 mark positioned across the mouth area. Front and back views included.'},
-{id:'pink-sheisty',name:'PINK SHEISTY',price:12,images:['pink-sheisty-front.png','pink-sheisty-side.png'],sizes:['XS','S','M','L'],shopifyId:'10604561924280',desc:'Black sheisty featuring the signature pink 909 graphic across the mouth area. Available in XS, S, M, and L.'},
-{id:'pink',name:'PINK',price:25,images:['pink-front.jpg','pink-back.jpg'],sizes:['XS','S','M','L'],shopifyId:'10567807533240',desc:'Black tee with the pink 909 graphic. Front and back views included.'},
-{id:'white',name:'909 TEE — WHITE/BLACK',price:25,images:['white-front.jpg','white-back.jpg'],sizes:['XS','S','M','L'],shopifyId:'10603051090104',desc:'Black tee with the white 909 graphic. Front and back views included.'},
-{id:'old-pink',name:'909 TEE — OLD DESIGN',price:20,images:['old-pink-front.png','old-pink-back.png'],sizes:['XS','S','M','L'],shopifyId:'10606006632632',desc:'Black 909 tee with the original pink 909 graphic. Front and back views included.'},
-{id:'old-white',name:'909 TEE — OLD DESIGN WHITE',price:20,images:['old-white-front.png','old-white-back.png'],sizes:['XS','S','M','L'],shopifyId:'10606010302648',desc:'Black 909 tee with the original white 909 graphic. Front and back views included.'}
+{id:'sheisty',name:'909 SHEISTY',price:9,images:['sheisty-front.png','sheisty-back.png'],sizes:['XS','S','M','L'],shopifyId:'10603070947512',desc:'Black 909 sheisty with the 909 mark positioned across the mouth area. Front and back views included.'},
+{id:'pink-sheisty',name:'PINK SHEISTY',price:9,images:['pink-sheisty-front.png','pink-sheisty-side.png'],sizes:['XS','S','M','L'],shopifyId:'10604561924280',desc:'Black sheisty featuring the signature pink 909 graphic across the mouth area. Available in XS, S, M, and L.'},
+{id:'pink',name:'PINK',price:18,images:['pink-front.jpg','pink-back.jpg'],sizes:['XS','S','M','L'],shopifyId:'10567807533240',desc:'Black tee with the pink 909 graphic. Front and back views included.'},
+{id:'white',name:'909 TEE — WHITE/BLACK',price:18,images:['white-front.jpg','white-back.jpg'],sizes:['XS','S','M','L'],shopifyId:'10603051090104',desc:'Black tee with the white 909 graphic. Front and back views included.'},
+{id:'old-pink',name:'909 TEE — OLD DESIGN',price:15,images:['old-pink-front.png','old-pink-back.png'],sizes:['XS','S','M','L'],shopifyId:'10606006632632',desc:'Black 909 tee with the original pink 909 graphic. Front and back views included.'},
+{id:'old-white',name:'909 TEE — OLD DESIGN WHITE',price:15,images:['old-white-front.png','old-white-back.png'],sizes:['XS','S','M','L'],shopifyId:'10606010302648',desc:'Black 909 tee with the original white 909 graphic. Front and back views included.'}
 ];
 const SHOPIFY_DOMAIN='n1bwwm-j8.myshopify.com',SHOPIFY_TOKEN='a841d65c14d5a591825106830e0dc2de';
 let cart=JSON.parse(localStorage.getItem('909cart')||'[]').filter(x=>x.id!=='tee'),current=null,shopifyBusy=false;
@@ -40,20 +40,28 @@ localStorage.setItem('909cart',JSON.stringify(cart));const $=s=>document.querySe
 async function shopifyQuery(query,variables={}){const r=await fetch(`https://${SHOPIFY_DOMAIN}/api/2026-07/graphql.json`,{method:'POST',headers:{'Content-Type':'application/json','X-Shopify-Storefront-Access-Token':SHOPIFY_TOKEN},body:JSON.stringify({query,variables})});const j=await r.json();if(j.errors?.length)throw new Error(j.errors.map(e=>e.message).join('; '));return j.data}
 const productCache={};
 const productAliases={
- 'old-pink':['909 TEE — OLD DESIGN','909 TEE — OLD DESIGN PINK','OLD DESIGN PINK'],
- 'old-white':['909 TEE — OLD DESIGN WHITE','909 TEE — OLD DESIGN — WHITE','OLD DESIGN WHITE'],
- 'pink':['PINK','909 TEE — PINK','909 TEE PINK'],
- 'white':['909 TEE — WHITE/BLACK','909 TEE WHITE/BLACK','WHITE/BLACK'],
- 'sheisty':['909 SHEISTY','909 SHEISTY — WHITE','SHEISTY'],
- 'pink-sheisty':['PINK SHEISTY','909 PINK SHEISTY']
+ 'old-pink':['909 TEE — OLD DESIGN','909 TEE — OLD DESIGN PINK','OLD DESIGN PINK','OLD PINK'],
+ 'old-white':['909 TEE — OLD DESIGN WHITE','909 TEE — OLD DESIGN — WHITE','OLD DESIGN WHITE','OLD WHITE'],
+ 'pink':['PINK','909 TEE — PINK','909 TEE PINK','PINK TEE','PINK SHIRT'],
+ 'white':['909 TEE — WHITE/BLACK','909 TEE WHITE/BLACK','WHITE/BLACK','909 TEE WHITE','WHITE TEE','WHITE SHIRT'],
+ 'sheisty':['909 SHEISTY','909 SHEISTY — WHITE','SHEISTY','WHITE SHEISTY'],
+ 'pink-sheisty':['PINK SHEISTY','909 PINK SHEISTY','PINK SHEISTY — 909']
 };
 const normTitle=x=>(x||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 function titleMatches(p,title){
  const actual=normTitle(title);
  const wanted=[p.name,...(productAliases[p.id]||[])].map(normTitle);
  if(wanted.includes(actual))return true;
- // Safe fallback: only accept a title containing all the meaningful words from an alias.
- return wanted.some(w=>w && w.split(' ').every(word=>actual.split(' ').includes(word)));
+ const words=actual.split(' ');
+ // Product-specific fallbacks prevent a white tee from ever matching the pink tee,
+ // and prevent old designs from matching the new designs.
+ if(p.id==='sheisty') return words.includes('sheisty') && !words.includes('pink');
+ if(p.id==='pink-sheisty') return words.includes('sheisty') && words.includes('pink');
+ if(p.id==='old-pink') return words.includes('old') && words.includes('pink') && words.includes('tee');
+ if(p.id==='old-white') return words.includes('old') && words.includes('white') && words.includes('tee');
+ if(p.id==='pink') return words.includes('pink') && (words.includes('tee')||words.includes('shirt')) && !words.includes('old') && !words.includes('sheisty');
+ if(p.id==='white') return words.includes('white') && (words.includes('tee')||words.includes('shirt')) && !words.includes('old') && !words.includes('sheisty');
+ return false;
 }
 async function getShopifyProduct(p){
  if(productCache[p.id])return productCache[p.id];
