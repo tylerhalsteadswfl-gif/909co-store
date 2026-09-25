@@ -39,33 +39,40 @@ let cart=JSON.parse(localStorage.getItem('909cart')||'[]').filter(x=>x.id!=='tee
 localStorage.setItem('909cart',JSON.stringify(cart));const $=s=>document.querySelector(s);function money(n){return '$'+Number(n).toFixed(2)}
 async function shopifyQuery(query,variables={}){const r=await fetch(`https://${SHOPIFY_DOMAIN}/api/2026-07/graphql.json`,{method:'POST',headers:{'Content-Type':'application/json','X-Shopify-Storefront-Access-Token':SHOPIFY_TOKEN},body:JSON.stringify({query,variables})});const j=await r.json();if(j.errors?.length)throw new Error(j.errors.map(e=>e.message).join('; '));return j.data}
 const productCache={};
+const productAliases={
+ 'old-pink':['909 TEE — OLD DESIGN','909 TEE — OLD DESIGN PINK','OLD DESIGN PINK'],
+ 'old-white':['909 TEE — OLD DESIGN WHITE','909 TEE — OLD DESIGN — WHITE','OLD DESIGN WHITE'],
+ 'pink':['PINK','909 TEE — PINK','909 TEE PINK'],
+ 'white':['909 TEE — WHITE/BLACK','909 TEE WHITE/BLACK','WHITE/BLACK'],
+ 'sheisty':['909 SHEISTY','909 SHEISTY — WHITE','SHEISTY'],
+ 'pink-sheisty':['PINK SHEISTY','909 PINK SHEISTY']
+};
+const normTitle=x=>(x||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+function titleMatches(p,title){
+ const actual=normTitle(title);
+ const wanted=[p.name,...(productAliases[p.id]||[])].map(normTitle);
+ if(wanted.includes(actual))return true;
+ // Safe fallback: only accept a title containing all the meaningful words from an alias.
+ return wanted.some(w=>w && w.split(' ').every(word=>actual.split(' ').includes(word)));
+}
 async function getShopifyProduct(p){
  if(productCache[p.id])return productCache[p.id];
+ const fields=`id title variants(first:100){nodes{id title availableForSale price{amount} selectedOptions{name value}}}`;
+ // First try the stored product ID, but NEVER trust it unless its title matches the
+ // product the customer actually selected. This prevents a stale/wrong ID from
+ // sending a white sheisty to a completely different shirt at checkout.
  const gid=`gid://shopify/Product/${p.shopifyId}`;
- const aliases={
-  'old-pink':['909 TEE — OLD DESIGN','909 TEE — OLD DESIGN PINK','OLD DESIGN PINK'],
-  'old-white':['909 TEE — OLD DESIGN WHITE','909 TEE — OLD DESIGN — WHITE','OLD DESIGN WHITE'],
-  'pink':['PINK','909 TEE — PINK','909 TEE PINK'],
-  'white':['909 TEE — WHITE/BLACK','909 TEE WHITE/BLACK','WHITE/BLACK'],
-  'sheisty':['909 SHEISTY','SHEISTY'],
-  'pink-sheisty':['PINK SHEISTY','909 PINK SHEISTY']
- };
- const data=await shopifyQuery(`query($id:ID!){product(id:$id){id title variants(first:100){nodes{id title availableForSale price{amount} selectedOptions{name value}}}}}`,{id:gid});
- let product=data.product;
+ const byId=await shopifyQuery(`query($id:ID!){product(id:$id){${fields}}}`,{id:gid});
+ let product=byId.product;
+ if(product && !titleMatches(p,product.title))product=null;
  if(!product){
-  const list=await shopifyQuery(`query{products(first:100){nodes{id title variants(first:100){nodes{id title availableForSale price{amount} selectedOptions{name value}}}}}}`);
+  const list=await shopifyQuery(`query{products(first:100){nodes{${fields}}}}`);
   const nodes=list.products?.nodes||[];
-  const wanted=[p.name,...(aliases[p.id]||[])].map(x=>x.trim().toLowerCase());
-  const norm=x=>(x||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
-  product=nodes.find(x=>wanted.includes((x.title||'').trim().toLowerCase()));
-  if(!product)product=nodes.find(x=>wanted.includes(norm(x.title)));
-  if(!product){
-   const simplified=wanted.map(norm);
-   product=nodes.find(x=>simplified.some(w=>norm(x.title)===w||norm(x.title).includes(w)||w.includes(norm(x.title))));
-  }
+  product=nodes.find(x=>titleMatches(p,x.title));
  }
- if(!product)throw new Error('Shopify product not found: '+p.name+' (ID '+p.shopifyId+')');
- productCache[p.id]=product;return product;
+ if(!product)throw new Error('Shopify product not found: '+p.name);
+ productCache[p.id]=product;
+ return product;
 }
 async function findVariant(p,size){const sp=await getShopifyProduct(p);let vs=sp.variants.nodes;if(size){let exact=vs.find(v=>v.selectedOptions.some(o=>o.name.toLowerCase()==='size'&&o.value.toLowerCase()===size.toLowerCase()));if(exact)return exact;let title=vs.find(v=>v.title.toLowerCase()===size.toLowerCase());if(title)return title;}return vs[0]}
 async function syncShopifyCart(){const lines=[];for(const x of cart){const p=products.find(q=>q.id===x.id);if(!p?.shopifyId)continue;const v=await findVariant(p,x.size);lines.push({merchandiseId:v.id,quantity:x.qty});}if(!lines.length)return null;const data=await shopifyQuery(`mutation($lines:[CartLineInput!]){cartCreate(input:{lines:$lines}){cart{id checkoutUrl}userErrors{field message}}}`,{lines});const err=data.cartCreate.userErrors?.[0];if(err)throw new Error(err.message);return data.cartCreate.cart}
