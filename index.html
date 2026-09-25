@@ -37,20 +37,35 @@ const products=[
 const SHOPIFY_DOMAIN='n1bwwm-j8.myshopify.com',SHOPIFY_TOKEN='a841d65c14d5a591825106830e0dc2de';
 let cart=JSON.parse(localStorage.getItem('909cart')||'[]').filter(x=>x.id!=='tee'),current=null,shopifyBusy=false;
 localStorage.setItem('909cart',JSON.stringify(cart));const $=s=>document.querySelector(s);function money(n){return '$'+Number(n).toFixed(2)}
-async function shopifyQuery(query,variables={}){const r=await fetch(`https://${SHOPIFY_DOMAIN}/api/2025-01/graphql.json`,{method:'POST',headers:{'Content-Type':'application/json','X-Shopify-Storefront-Access-Token':SHOPIFY_TOKEN},body:JSON.stringify({query,variables})});const j=await r.json();if(j.errors?.length)throw new Error(j.errors.map(e=>e.message).join('; '));return j.data}
+async function shopifyQuery(query,variables={}){const r=await fetch(`https://${SHOPIFY_DOMAIN}/api/2026-07/graphql.json`,{method:'POST',headers:{'Content-Type':'application/json','X-Shopify-Storefront-Access-Token':SHOPIFY_TOKEN},body:JSON.stringify({query,variables})});const j=await r.json();if(j.errors?.length)throw new Error(j.errors.map(e=>e.message).join('; '));return j.data}
 const productCache={};
 async function getShopifyProduct(p){
  if(productCache[p.id])return productCache[p.id];
- const data=await shopifyQuery(`query{products(first:100){nodes{id title variants(first:100){nodes{id title availableForSale price{amount} selectedOptions{name value}}}}}}`);
- const wanted=p.name.trim().toLowerCase();
- const nodes=(data.products?.nodes||[]);
- let product=nodes.find(x=>(x.title||'').trim().toLowerCase()===wanted);
+ const gid=`gid://shopify/Product/${p.shopifyId}`;
+ const aliases={
+  'old-pink':['909 TEE — OLD DESIGN','909 TEE — OLD DESIGN PINK','OLD DESIGN PINK'],
+  'old-white':['909 TEE — OLD DESIGN WHITE','909 TEE — OLD DESIGN — WHITE','OLD DESIGN WHITE'],
+  'pink':['PINK','909 TEE — PINK','909 TEE PINK'],
+  'white':['909 TEE — WHITE/BLACK','909 TEE WHITE/BLACK','WHITE/BLACK'],
+  'sheisty':['909 SHEISTY','SHEISTY'],
+  'pink-sheisty':['PINK SHEISTY','909 PINK SHEISTY']
+ };
+ const data=await shopifyQuery(`query($id:ID!){product(id:$id){id title variants(first:100){nodes{id title availableForSale price{amount} selectedOptions{name value}}}}}`,{id:gid});
+ let product=data.product;
  if(!product){
-  const simplified=wanted.replace(/[^a-z0-9]+/g,' ').trim();
-  product=nodes.find(x=>(x.title||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()===simplified);
+  const list=await shopifyQuery(`query{products(first:100){nodes{id title variants(first:100){nodes{id title availableForSale price{amount} selectedOptions{name value}}}}}}`);
+  const nodes=list.products?.nodes||[];
+  const wanted=[p.name,...(aliases[p.id]||[])].map(x=>x.trim().toLowerCase());
+  const norm=x=>(x||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+  product=nodes.find(x=>wanted.includes((x.title||'').trim().toLowerCase()));
+  if(!product)product=nodes.find(x=>wanted.includes(norm(x.title)));
+  if(!product){
+   const simplified=wanted.map(norm);
+   product=nodes.find(x=>simplified.some(w=>norm(x.title)===w||norm(x.title).includes(w)||w.includes(norm(x.title))));
+  }
  }
- if(!product)throw new Error('Shopify product not found: '+p.name);
- productCache[p.id]=product;return product
+ if(!product)throw new Error('Shopify product not found: '+p.name+' (ID '+p.shopifyId+')');
+ productCache[p.id]=product;return product;
 }
 async function findVariant(p,size){const sp=await getShopifyProduct(p);let vs=sp.variants.nodes;if(size){let exact=vs.find(v=>v.selectedOptions.some(o=>o.name.toLowerCase()==='size'&&o.value.toLowerCase()===size.toLowerCase()));if(exact)return exact;let title=vs.find(v=>v.title.toLowerCase()===size.toLowerCase());if(title)return title;}return vs[0]}
 async function syncShopifyCart(){const lines=[];for(const x of cart){const p=products.find(q=>q.id===x.id);if(!p?.shopifyId)continue;const v=await findVariant(p,x.size);lines.push({merchandiseId:v.id,quantity:x.qty});}if(!lines.length)return null;const data=await shopifyQuery(`mutation($lines:[CartLineInput!]){cartCreate(input:{lines:$lines}){cart{id checkoutUrl}userErrors{field message}}}`,{lines});const err=data.cartCreate.userErrors?.[0];if(err)throw new Error(err.message);return data.cartCreate.cart}
